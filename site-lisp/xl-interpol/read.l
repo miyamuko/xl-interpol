@@ -1,5 +1,4 @@
-;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/read.lisp,v 1.31 2008/07/23 15:13:08 edi Exp $
+; -*- mode: lisp; package: xl-interpol; encoding: shift_jis -*-
 
 ;;; Copyright (c) 2003-2008, Dr. Edmund Weitz. All rights reserved.
 
@@ -714,3 +713,8 @@ ENABLE-INTERPOL-SYNTAX. If there was no such call, the standard
 readtable is used."
   `(eval-when (:compile-toplevel :load-toplevel :execute)
     (%disable-interpol-syntax)))
+
+
+(provide "xl-interpol/read")
+
+;;; End

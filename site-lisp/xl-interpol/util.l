@@ -1,5 +1,4 @@
-;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/util.lisp,v 1.12 2008/07/23 14:41:37 edi Exp $
+; -*- mode: lisp; package: xl-interpol; encoding: shift_jis -*-
 
 ;;; Copyright (c) 2003-2008, Dr. Edmund Weitz. All rights reserved.
 
@@ -120,3 +119,8 @@ INTERPOL-READER was invoked. Memoizes its result."
               :element-type (array-element-type sequence)
               :displaced-to sequence
               :displaced-index-offset start))
+
+
+(provide "xl-interpol/util")
+
+;;; End

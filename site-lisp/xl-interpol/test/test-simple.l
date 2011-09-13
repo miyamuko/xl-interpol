@@ -1,5 +1,4 @@
-;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL-TEST; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/test/simple,v 1.4 2008/07/23 15:13:13 edi Exp $
+; -*- mode: lisp; package: xl-interpol; encoding: shift_jis -*-
 
 ;;; some simple tests for CL-INTERPOL - entered manually and to be
 ;;; read in the CL-INTERPOL-TEST package; all forms except SETQ forms

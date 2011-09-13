@@ -1,5 +1,4 @@
-;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/specials.lisp,v 1.12 2008/07/23 13:58:40 edi Exp $
+; -*- mode: lisp; package: xl-interpol; encoding: shift_jis -*-
 
 ;;; Copyright (c) 2003-2008, Dr. Edmund Weitz. All rights reserved.
 
@@ -38,7 +37,7 @@ interpolated by #\@.")
                              (#\< . #\>)
                              (#\[ . #\]))
   "Legal delimiters for interpolation with #\$ and #\@.")
-                             
+
 (defvar *outer-delimiters* '((#\( . #\))
                              (#\{ . #\})
                              (#\< . #\>)
@@ -110,4 +109,8 @@ modified.")
     (cdr (assoc symbol
                 exported-symbols-alist
                 :test #'eq))))
-               
+
+
+(provide "xl-interpol/specials")
+
+;;; End

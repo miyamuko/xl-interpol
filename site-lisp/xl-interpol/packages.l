@@ -1,5 +1,4 @@
-;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/packages.lisp,v 1.11 2008/07/23 15:35:07 edi Exp $
+; -*- mode: lisp; package: xl-interpol; encoding: shift_jis -*-
 
 ;;; Copyright (c) 2003-2008, Dr. Edmund Weitz. All rights reserved.
 
@@ -38,3 +37,7 @@
            :*outer-delimiters*
            :*inner-delimiters*
 	   :*optional-delimiters-p*))
+
+(provide "xl-interpol/packages")
+
+;;; End
