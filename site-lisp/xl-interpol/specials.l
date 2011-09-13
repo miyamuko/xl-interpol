@@ -28,7 +28,7 @@
 
 (in-package :xl-interpol)
 
-(defvar *list-delimiter* #\Space
+(defvar *list-delimiter* #\SPC
   "What is inserted between the elements of a list which is
 interpolated by #\@.")
 

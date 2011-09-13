@@ -141,15 +141,15 @@ backslash has already been consumed."
               ;; aware of any implementation that doesn't implement
               ;; them
               ((#\t)
-                #\Tab)
+                #\TAB)
               ((#\n)
-                #\Newline)
+                #\LFD)
               ((#\r)
-                #\Return)
+                #\RET)
               ((#\f)
-                #\Page)
+                #\C-l)
               ((#\b)
-                #\Backspace)
+                #\C-h)
               ((#\a)
                 (code-char 7))                  ; ASCII bell
               ((#\e)
@@ -403,7 +403,7 @@ call itself recursively."
                                       (t
                                         (setq *saw-backslash* nil)
                                         (parse-with-case-mode 'string-upcase))))
-                              ((#\Space #\Tab #\Linefeed #\Return #\Page)
+                              ((#\SPC #\TAB #\LFD #\RET #\C-l)
                                 (cond ((and extended-mode
                                             (not (eq regex-mode :in-char-class)))
                                         ;; in extended mode (if not in
@@ -457,13 +457,13 @@ call itself recursively."
                                         ;; mode and not inside of a \Q
                                         ;; scope or a character class,
                                         ;; so this is a comment and we
-                                        ;; consume it 'till #\Newline
+                                        ;; consume it 'till #\LFD
                                         ;; or *TERM-CHAR*
                                         (read-while
                                          (lambda (char)
-                                           (and (char/= char #\Newline)
+                                           (and (char/= char #\LFD)
                                                 (char/= char *term-char*))))
-                                        (when (char= (peek-char*) #\Newline)
+                                        (when (char= (peek-char*) #\LFD)
                                           (read-char*))
                                         (cond ((not (digit-char-p (peek-char*)
                                                                   16))
