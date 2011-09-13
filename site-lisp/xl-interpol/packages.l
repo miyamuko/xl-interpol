@@ -26,17 +26,23 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :cl-user)
+(in-package :user)
 
-(defpackage :cl-interpol
+(require "xl-ppcre")
+
+(defpackage :xl-interpol
   (:nicknames :interpol)
-  (:use :cl :cl-unicode :cl-ppcre)
-  (:export :enable-interpol-syntax
-           :disable-interpol-syntax
-           :*list-delimiter*
-           :*outer-delimiters*
-           :*inner-delimiters*
-	   :*optional-delimiters-p*))
+  (:use :lisp :ppcre)
+  )
+
+(in-package :xl-interpol)
+
+(export '(enable-interpol-syntax
+          disable-interpol-syntax
+          *list-delimiter*
+          *outer-delimiters*
+          *inner-delimiters*
+          *optional-delimiters-p*))
 
 (provide "xl-interpol/packages")
 

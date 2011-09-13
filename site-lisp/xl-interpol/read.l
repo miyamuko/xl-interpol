@@ -26,7 +26,7 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :cl-interpol)
+(in-package :xl-interpol)
 
 (defun read-while (predicate &key max)
   "Reads characters from *STREAM* while PREDICATE returns a true value

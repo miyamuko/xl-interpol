@@ -26,7 +26,7 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :cl-interpol)
+(in-package :xl-interpol)
 
 (defvar *list-delimiter* #\Space
   "What is inserted between the elements of a list which is
@@ -99,7 +99,7 @@ modified.")
 (defvar *hyperdoc-base-uri* "http://weitz.de/cl-interpol/")
 
 (let ((exported-symbols-alist
-       (loop for symbol being the external-symbols of :cl-interpol
+       (loop for symbol being the external-symbols of :xl-interpol
              collect (cons symbol
                            (concatenate 'string
                                         "#"
