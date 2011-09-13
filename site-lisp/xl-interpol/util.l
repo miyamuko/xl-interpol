@@ -28,7 +28,7 @@
 
 (in-package :xl-interpol)
 
-(define-condition simple-reader-error (simple-condition reader-error)
+(define-condition simple-reader-error (simple-condition)
   ()
   (:documentation "A reader error which can be signalled by ERROR."))
 
