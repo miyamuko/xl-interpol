@@ -108,7 +108,6 @@ modified.")
                                         "#"
                                         (string-downcase symbol))))))
   (defun hyperdoc-lookup (symbol type)
-    (declare (ignore type))
     (cdr (assoc symbol
                 exported-symbols-alist
                 :test #'eq))))

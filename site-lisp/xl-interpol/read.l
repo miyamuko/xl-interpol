@@ -253,7 +253,6 @@ returns NIL."
 
 (defun interpol-reader (*stream* char arg)
   "The actual reader function for the 'sub-character' #\?."
-  (declare (ignore arg char))
   (let ((*start-char* (read-char*))
         ;; REGEX-MODE is true if we're in regular expression mode; it
         ;; can have one of the values :START-OF-CHAR-CLASS,
