@@ -31,6 +31,7 @@
   (require "xl-interpol/packages")
   (require "xl-interpol/specials")
   (require "xl-interpol/util")
+  (require "xl-interpol/missing")
   )
 
 (in-package :xl-interpol)
@@ -208,7 +209,7 @@ that tries to deal correctly with lexical variables."
 		    (princ ,(subseq name i) ,ostr)
 		    ,ostr)
 		(unbound-variable () ,form)))))
-	   
+
   (loop
      with name = (read-longest-name)
      with form = `(error ,(format nil "Interpolation error in ~s~%" name))
@@ -667,7 +668,7 @@ call itself recursively."
                                                        ((:upcase)
                                                          (setq handle-next-char nil)
                                                          (char-upcase char))
-                                                       (otherwise 
+                                                       (otherwise
                                                          char))
                                                      collector)))
                       ((plusp (length collector))
@@ -703,7 +704,7 @@ readtable on stack."
   (values))
 
 (defun %disable-interpol-syntax ()
-  "Internal function used to restore previous readtable." 
+  "Internal function used to restore previous readtable."
   (if *previous-readtables*
     (setq *readtable* (pop *previous-readtables*))
     (setq *readtable* (copy-readtable nil)))
