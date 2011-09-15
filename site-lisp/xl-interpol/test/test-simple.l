@@ -45,14 +45,11 @@
   )
 
 (define-test readmacro2
-  #|
-なんか読み込めない
-
   (assert-string= #?"\t\n\r\f\b\a\e"
                   (coerce (list #\TAB #\LFD #\RET #\C-l #\C-h (code-char 7) (code-char 27))
                           'string))
   (assert-string= #?"\033\x1b\c[\x{1b}"
-                  (make-string 4 :initial-element (code-char 27)))
+                  (make-sequence 'string 4 :initial-element (code-char 27)))
   (assert-string= #?"\x" (string (code-char 0)))
   (assert-string= #?"\x001" (format nil "~A1" (code-char 0)))
   (assert-string= #?"\0001" (format nil "~A1" (code-char 0)))
@@ -61,7 +58,6 @@
   (assert-eql 0 (char-code (char #?"\x" 0)))
   (assert-eql 0 (char-code (char #?"\x{}" 0)))
   (assert-string=  #?"Only\x202 digits!" "Only 2 digits!")
-  |#
 
   ;; might in theory fail on some Lisps - see 13.1.7
   (assert-string-equal (char-name (char #?"\cH" 0)) "Backspace")
@@ -98,50 +94,53 @@
 
 (define-test readmacro3
   (let ((a "foo"))
-    (and (assert-string= #?"$" "$")
-         (assert-string= #?"@ @" "@ @")
-         (assert-string= #?"${a}bar" "foobar")
-         (assert-string= #?/${a}bar/ "foobar")
-         (assert-string= #?"$[a]bar" "foobar")
-         (assert-string= #?"$(a)bar" "foobar")
-         (assert-string= #?"$<a>bar" "foobar")
-         (assert-string= #?/$<a>bar/ "$<a>bar")
-         (assert-string= #?"$a @a " "$a @a ")))
+    (assert-string= #?"$" "$")
+    (assert-string= #?"@ @" "@ @")
+    (assert-string= #?"${a}bar" "foobar")
+    (assert-string= #?/${a}bar/ "foobar")
+    (assert-string= #?"$[a]bar" "foobar")
+    (assert-string= #?"$(a)bar" "foobar")
+    (assert-string= #?"$<a>bar" "foobar")
+    (assert-string= #?/$<a>bar/ "$<a>bar")
+    (assert-string= #?"$a @a " "$a @a "))
 
   (let ((a (list 1 2 3)))
-    (and (assert-string= #?"${a}" "(1 2 3)")
-         (assert-string= #?"@{a}" "1 2 3")
-         (let ((*list-delimiter* ""))
-           (assert-string= #?"@{a}" "123"))))
+    (assert-string= #?"${a}" "(1 2 3)")
+    (assert-string= #?"@{a}" "1 2 3")
+    (let ((*list-delimiter* ""))
+      (assert-string= #?"@{a}" "123")))
 
   (let* ((a "foo")
          (b #\SPC)
          (c "bar")
          (d (list a b c))
          (x 40))
-    (and (assert-string= #?"$ @" "$ @")
-         (assert-string= #?"$(a)" "foo")
-         (assert-string= #?"$<a>$[b]" "foo ")
-         (assert-string= #?"\U${a}\E \u${a}" "FOO Foo")
-         (assert-string= (let ((*list-delimiter* #\*))
-                           #?"@{d}")
-                         "foo* *bar")
-         (assert-string= (let ((*list-delimiter* ""))
-                           #?"@{d}")
-                         "foo bar")
-         (assert-string= #?"The result is ${(let ((y 2)) (+ x y))}"
-                         "The result is 42")
-         (assert-string= #?"${#?'${a} ${c}'} ${x}" "foo bar 40")))
+    (assert-string= #?"$ @" "$ @")
+    (assert-string= #?"$(a)" "foo")
+    (assert-string= #?"$<a>$[b]" "foo ")
+    (assert-string= #?"\U${a}\E \u${a}" "FOO Foo")
+    (assert-string= (let ((*list-delimiter* #\*))
+                      #?"@{d}")
+                    "foo* *bar")
+    (assert-string= (let ((*list-delimiter* ""))
+                      #?"@{d}")
+                    "foo bar")
+    (assert-string= #?"The result is ${(let ((y 2)) (+ x y))}"
+                    "The result is 42")
+    (assert-string= #?"${#?'${a} ${c}'} ${x}" "foo bar 40"))
   )
 
+#|
+read 時のみ *optional-delimiters-p* を t にしてテストしたいけど、
+やり方がわからない
 (define-test readmacro4
   (setq *optional-delimiters-p* t)
-
   (assert-string= (let ((% 23)) #?"$%a%b%") "23a%b%")
   (assert-string= (let ((%a 23)) #?"$%a%b%") "23%b%")
   (assert-string= (let ((%a% 23)) #?"$%a%b%") "23b%")
   (assert-string= (let ((%a%b 23)) #?"$%a%b%") "23%")
   (assert-string= (let ((%a%b% 23)) #?"$%a%b%") "23")
   )
+|#
 
 (disable-interpol-syntax)
