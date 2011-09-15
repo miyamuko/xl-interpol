@@ -1,143 +1,147 @@
-; -*- mode: lisp; package: xl-interpol; encoding: shift_jis -*-
+; -*- mode: lisp; package: xl-interpol.test; encoding: shift_jis -*-
 
 ;;; some simple tests for CL-INTERPOL - entered manually and to be
 ;;; read in the CL-INTERPOL-TEST package; all forms except SETQ forms
 ;;; are expected to return a true value on success when EVALuated
 
-(string= #?"abc" "abc")
-(string= #?'abc' "abc")
-(string= #?|abc| "abc")
-(string= #?/abc/ "abc")
-(string= #?#abc# "abc")
-(string= #?{abc} "abc")
-(string= #?(abc) "abc")
-(string= #?<abc> "abc")
-(string= #?[abc] "abc")
+(require "xl-interpol")
+(require "lisp-unit")
 
-(string= #?"abc\"" "abc\"")
-(string= #?"abc\\" "abc\\")
-(string= #?[a[b]c] "a[b]c")
-(string= #?[a[[b]]c] "a[[b]]c")
-(string= #?[a[[][]]b] "a[[][]]b")
+(defpackage :xl-interpol.test
+  (:use :lisp :editor :lisp-unit :xl-interpol))
 
-(string= #?"\t\n\r\f\b\a\e"
-                 (coerce (list #\Tab #\Newline #\Return #\Page #\Backspace (code-char 7) (code-char 27))
-                         'string))
-(string= #?"\033\x1b\c[\x{1b}"
-                 (make-string 4 :initial-element (code-char 27)))
-(string= #?"\x" (string (code-char 0)))
-(string= #?"\x001" (format nil "~A1" (code-char 0)))
-(string= #?"\0001" (format nil "~A1" (code-char 0)))
+(in-package :xl-interpol.test)
 
-(char= (char #?"\x20" 0) #\Space)
-(zerop (char-code (char #?"\x" 0)))
-(zerop (char-code (char #?"\x{}" 0)))
-(string= (unicode-name (char #?"\x{2323}" 0)) "SMILE")
-(string=  #?"Only\x202 digits!" "Only 2 digits!")
+(remove-all-tests :xl-interpol.test)
 
-;; might in theory fail on some Lisps - see 13.1.7
-(string-equal (char-name (char #?"\cH" 0)) "Backspace")
-(char= (char #?"\cj" 0) #\Newline)
+(enable-interpol-syntax)
 
-;; two spaces
-(string= #?"\40\040" "  "  )
-;; note that \377 and \777 yield the same result
-(equal (map 'list #'char-code #?"\0\377\777") '(0 255 255))
-(string= #?"Only\0403 digits!" "Only 3 digits!")
-(equal (map 'list #'identity #?"\9") (list #\9))
+(defmacro assert-string= (expected form &rest extras)
+  (lisp-unit::expand-assert :equal form form expected extras :test #'string=))
 
-(string= #?"\N{LATIN CAPITAL LETTER A WITH DIAERESIS}" "ƒ")
-(string= #?"\N{latin capital letter a with diaeresis}" "ƒ")
-(string= #?{\N{LATIN CAPITAL LETTER A WITH DIAERESIS}} "ƒ")
+(defmacro assert-string-equal (expected form &rest extras)
+  (lisp-unit::expand-assert :equal form form expected extras :test #'string-equal))
 
-(setq *try-abbreviations-p* t)
+(defmacro assert-char= (expected form &rest extras)
+  (lisp-unit::expand-assert :equal form form expected extras :test #'char=))
 
-(string= #?"\N{Latin:A with Diaeresis}" "ƒ")
-(string= #?"\N{Latin:a with diaeresis}" "‰")
 
-(setq *scripts-to-try* "Latin")
+(define-test readmacro
+  (assert-string= #?"abc" "abc")
+  (assert-string= #?'abc' "abc")
+  (assert-string= #?|abc| "abc")
+  (assert-string= #?/abc/ "abc")
+  (assert-string= #?#abc# "abc")
+  (assert-string= #?{abc} "abc")
+  (assert-string= #?(abc) "abc")
+  (assert-string= #?<abc> "abc")
+  (assert-string= #?[abc] "abc")
 
-(string= #?"\N{A with Diaeresis}" "ƒ")
-(string= #?"\N{a with diaeresis}" "‰")
+  (assert-string= #?"abc\"" "abc\"")
+  (assert-string= #?"abc\\" "abc\\")
+  (assert-string= #?[a[b]c] "a[b]c")
+  (assert-string= #?[a[[b]]c] "a[[b]]c")
+  (assert-string= #?[a[[][]]b] "a[[][]]b")
+  )
 
-(setq *try-abbreviations-p* nil)
-(setq *try-unicode1-names-p* t)
+(define-test readmacro2
+  #|
+Ç»ÇÒÇ©ì«Ç›çûÇﬂÇ»Ç¢
 
-(string= #?"\N{LINEFEED (LF)}" #\Linefeed)
+  (assert-string= #?"\t\n\r\f\b\a\e"
+                  (coerce (list #\TAB #\LFD #\RET #\C-l #\C-h (code-char 7) (code-char 27))
+                          'string))
+  (assert-string= #?"\033\x1b\c[\x{1b}"
+                  (make-string 4 :initial-element (code-char 27)))
+  (assert-string= #?"\x" (string (code-char 0)))
+  (assert-string= #?"\x001" (format nil "~A1" (code-char 0)))
+  (assert-string= #?"\0001" (format nil "~A1" (code-char 0)))
 
-;; special CL-INTERPOL aliases
-(string= #?"\N{LINEFEED}" #\Linefeed)
-(string= #?"\N{CR}" #\Return)
+  (assert-char= (char #?"\x20" 0) #\SPC)
+  (assert-eql 0 (char-code (char #?"\x" 0)))
+  (assert-eql 0 (char-code (char #?"\x{}" 0)))
+  (assert-string=  #?"Only\x202 digits!" "Only 2 digits!")
+  |#
 
-(setq *try-hex-notation-p* t)
+  ;; might in theory fail on some Lisps - see 13.1.7
+  (assert-string-equal (char-name (char #?"\cH" 0)) "Backspace")
+  (assert-char= (char #?"\cj" 0) #\LFD)
 
-(= (char-code (char #?"\N{U+0042}" 0)) #x42)
+  ;; two spaces
+  (assert-string= #?"\40\040" "  "  )
+  ;; note that \377 and \777 yield the same result
+  (assert-equal (map 'list #'char-code #?"\0\377\777") '(0 255 255))
+  (assert-string= #?"Only\0403 digits!" "Only 3 digits!")
+  (assert-equal (map 'list #'identity #?"\9") (list #\9))
 
-(setq *try-lisp-names-p* t)
+  (assert-string= #?/\1/ "\\1")
+  (assert-string= #?r"\1" "\\1")
+  (assert-string= #?r"\k<foo>" "\\k<foo>")
+  (assert-string= #?r"\p{LC}" "\\p{LC}")
+  (assert-string= #?x/abc / "abc")
+  (assert-string= #?x/abc
+                  / "abc")
+  (assert-string= #?rx"abc " "abc")
+  (assert-string= #?/[\1]\1/ (format nil "[~A]\\1" (code-char 1)))
+  (assert-string= #?/[(?#foo)](?#foo)/ "[(?#foo)]")
+  (assert-string= #?/a#bc/ "a#bc")
+  (assert-string= #?x/a#bc/ "a")
+  (assert-string= #?x/\d\A[\d\A]/ "\\d\\A[\\dA]")
 
-(char= (char #?"\N{Newline}" 0) #\Newline)
+  (assert-string= #?"\Q-" "\\-")
+  (assert-string= #?"\Q-\E-" "\\--")
+  (assert-string= #?"\ufoo" "Foo")
+  (assert-string= #?"\Ufoo" "FOO")
+  (assert-string= #?"\Ufoo\Ebar" "FOObar")
+  (assert-string= #?"\Ufoo\LBAR" "FOObar")
+  )
 
-(string= #?/\1/ "\\1")
-(string= #?r"\1" "\\1")
-(string= #?r"\k<foo>" "\\k<foo>")
-(string= #?r"\p{LC}" "\\p{LC}")
-(string= #?x/abc / "abc")
-(string= #?x/abc
-                         / "abc")
-(string= #?rx"abc " "abc")
-(string= #?/[\1]\1/ (format nil "[~A]\\1" (code-char 1)))
-(string= #?/[(?#foo)](?#foo)/ "[(?#foo)]")
-(string= #?/a#bc/ "a#bc")
-(string= #?x/a#bc/ "a")
-(string= #?x/\d\A[\d\A]/ "\\d\\A[\\dA]")
+(define-test readmacro3
+  (let ((a "foo"))
+    (and (assert-string= #?"$" "$")
+         (assert-string= #?"@ @" "@ @")
+         (assert-string= #?"${a}bar" "foobar")
+         (assert-string= #?/${a}bar/ "foobar")
+         (assert-string= #?"$[a]bar" "foobar")
+         (assert-string= #?"$(a)bar" "foobar")
+         (assert-string= #?"$<a>bar" "foobar")
+         (assert-string= #?/$<a>bar/ "$<a>bar")
+         (assert-string= #?"$a @a " "$a @a ")))
 
-(string= #?"\Q-" "\\-")
-(string= #?"\Q-\E-" "\\--")
-(string= #?"\ufoo" "Foo")
-(string= #?"\Ufoo" "FOO")
-(string= #?"\Ufoo\Ebar" "FOObar")
-(string= #?"\Ufoo\LBAR" "FOObar")
+  (let ((a (list 1 2 3)))
+    (and (assert-string= #?"${a}" "(1 2 3)")
+         (assert-string= #?"@{a}" "1 2 3")
+         (let ((*list-delimiter* ""))
+           (assert-string= #?"@{a}" "123"))))
 
-(let ((a "foo"))
-  (and (string= #?"$" "$")
-       (string= #?"@ @" "@ @")
-       (string= #?"${a}bar" "foobar")
-       (string= #?/${a}bar/ "foobar")
-       (string= #?"$[a]bar" "foobar")
-       (string= #?"$(a)bar" "foobar")
-       (string= #?"$<a>bar" "foobar")
-       (string= #?/$<a>bar/ "$<a>bar")
-       (string= #?"$a @a " "$a @a ")))
+  (let* ((a "foo")
+         (b #\SPC)
+         (c "bar")
+         (d (list a b c))
+         (x 40))
+    (and (assert-string= #?"$ @" "$ @")
+         (assert-string= #?"$(a)" "foo")
+         (assert-string= #?"$<a>$[b]" "foo ")
+         (assert-string= #?"\U${a}\E \u${a}" "FOO Foo")
+         (assert-string= (let ((*list-delimiter* #\*))
+                           #?"@{d}")
+                         "foo* *bar")
+         (assert-string= (let ((*list-delimiter* ""))
+                           #?"@{d}")
+                         "foo bar")
+         (assert-string= #?"The result is ${(let ((y 2)) (+ x y))}"
+                         "The result is 42")
+         (assert-string= #?"${#?'${a} ${c}'} ${x}" "foo bar 40")))
+  )
 
-(let ((a (list 1 2 3)))
-  (and (string= #?"${a}" "(1 2 3)")
-       (string= #?"@{a}" "1 2 3")
-       (let ((*list-delimiter* ""))
-         (string= #?"@{a}" "123"))))
+(define-test readmacro4
+  (setq *optional-delimiters-p* t)
 
-(let* ((a "foo")
-       (b #\Space)
-       (c "bar")
-       (d (list a b c))
-       (x 40))
-  (and (string= #?"$ @" "$ @")
-       (string= #?"$(a)" "foo")
-       (string= #?"$<a>$[b]" "foo ")
-       (string= #?"\U${a}\E \u${a}" "FOO Foo")
-       (string= (let ((*list-delimiter* #\*))
-                  #?"@{d}")
-                "foo* *bar")
-       (string= (let ((*list-delimiter* ""))
-                  #?"@{d}")
-                "foo bar")
-       (string= #?"The result is ${(let ((y 2)) (+ x y))}"
-                "The result is 42")
-       (string= #?"${#?'${a} ${c}'} ${x}" "foo bar 40")))
+  (assert-string= (let ((% 23)) #?"$%a%b%") "23a%b%")
+  (assert-string= (let ((%a 23)) #?"$%a%b%") "23%b%")
+  (assert-string= (let ((%a% 23)) #?"$%a%b%") "23b%")
+  (assert-string= (let ((%a%b 23)) #?"$%a%b%") "23%")
+  (assert-string= (let ((%a%b% 23)) #?"$%a%b%") "23")
+  )
 
-(setq *optional-delimiters-p* t)
-
-(string= (let ((% 23)) #?"$%a%b%") "23a%b%")
-(string= (let ((%a 23)) #?"$%a%b%") "23%b%")
-(string= (let ((%a% 23)) #?"$%a%b%") "23b%")
-(string= (let ((%a%b 23)) #?"$%a%b%") "23%")
-(string= (let ((%a%b% 23)) #?"$%a%b%") "23")
+(disable-interpol-syntax)
