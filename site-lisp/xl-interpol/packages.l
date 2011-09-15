@@ -28,6 +28,7 @@
 
 (in-package :user)
 
+(require "cmu_loop")
 (require "xl-ppcre")
 
 (defpackage :xl-interpol

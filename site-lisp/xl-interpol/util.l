@@ -26,6 +26,10 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-interpol/packages")
+  )
+
 (in-package :xl-interpol)
 
 (define-condition simple-reader-error (simple-condition)
