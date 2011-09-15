@@ -1,0 +1,16 @@
+package: xl-interpol
+version: 0.0.1
+
+sources:
+  include:
+    - site-lisp/xl-interpol/**/*.l
+  exclude:
+    - site-lisp/xl-interpol/**/test/*.l
+
+document:
+  - README.rdoc
+
+files:
+  include:
+    - site-lisp/**/*.l
+    - site-lisp/**/*.lc

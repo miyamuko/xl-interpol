@@ -1,0 +1,81 @@
+== xl-interpol - String interpolation for xyzzy Lisp
+
+* Home URL: http://miyamuko.s56.xrea.com/xyzzy/xl-interpol/intro.htm
+* Version: 0.0.1
+
+
+=== SYNOPSIS
+
+  (require "xl-interpol")
+
+  ...
+
+=== DESCRIPTION
+
+xl-interpol は {CL-INTERPOL - String interpolation for Common Lisp}[http://weitz.de/cl-interpol/]
+を xyzzy に移植したものです。
+
+...
+
+=== INSTALL
+
+1. {NetInstaller}[http://www7a.biglobe.ne.jp/~hat/xyzzy/ni.html]
+   で xl-interpol をインストールします。
+
+2. xl-interpol はライブラリであるため自動的にロードはされません。
+   必要な時点で require してください。
+
+
+=== REFERENCE
+
+パッケージ名は xl-interpol (ニックネームは interpol) です。
+
+
+=== TODO
+
+
+=== KNOWN BUGS
+
+なし。
+
+要望やバグは
+{GitHub Issues}[http://github.com/miyamuko/xl-interpol/issues] か
+{@miyamuko}[http://twitter.com/home?status=%40miyamuko%20%23xyzzy%20xl-interpol%3a%20]
+まで。
+
+
+=== AUTHOR
+
+みやむこ かつゆき <mailto:miyamuko@gmail.com>
+
+
+=== COPYRIGHT
+
+xl-interpol は BSD ライセンスに従って本ソフトウェアを使用、再配布することができます。
+
+  Copyright (c) 2011 MIYAMUKO Katsuyuki.
+  Copyright (c) 2003-2008, Dr. Edmund Weitz. All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials
+      provided with the distribution.
+
+  THIS SOFTWARE IS PROVIDED BY THE AUTHOR 'AS IS' AND ANY EXPRESSED
+  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
