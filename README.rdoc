@@ -95,7 +95,7 @@ xl-interpol は以下の機能を提供しています。
 
 xl-interpol は以下の機能は <b>提供していません</b>。
 
-* ユニコード文字 (\N{Sigma} など)
+* ユニコード文字 (\\N{Sigma} など)
 
 === INSTALL
 
