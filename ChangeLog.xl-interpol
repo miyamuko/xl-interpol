@@ -1,5 +1,9 @@
 2011-09-19  MIYAMUKO Katsuyuki
 
+	* xyzzy の loop マクロがバグっているので一部書き換え
+	https://gist.github.com/520799
+	https://gist.github.com/1226038
+
 	* \N の場合は例外を投げるようにした
 
 2011-09-15  MIYAMUKO Katsuyuki
