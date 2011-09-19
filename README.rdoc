@@ -100,7 +100,7 @@ xl-interpol は以下の機能は <b>提供していません</b>。
 === INSTALL
 
 1. {NetInstaller}[http://www7a.biglobe.ne.jp/~hat/xyzzy/ni.html]
-   で xl-interpol をインストールします。
+   で xl-interpol, xl-ppcre をインストールします。
 
 2. xl-interpol はライブラリであるため自動的にロードはされません。
    必要な時点で require してください。

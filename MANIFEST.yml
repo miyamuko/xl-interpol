@@ -10,6 +10,9 @@ sources:
 document:
   - README.rdoc
 
+depends:
+  - xl-ppcre
+
 files:
   include:
     - site-lisp/**/*.l
