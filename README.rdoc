@@ -8,14 +8,94 @@
 
   (require "xl-interpol")
 
-  ...
+  (interpol:enable-interpol-syntax)
+
+  (defun greeting (name)
+    #?"Hello ${name}!")
+
+  (defun calc-add (a b)
+    #?"a = ${a}, b = ${b}, a + b = ${(+ a b)}")
+
+  (defun scan-numbers (str)
+    (mapcar #'parse-integer
+            (ppcre:all-matches-as-strings #?/\d+/ str)))
+
+  (interpol:disable-interpol-syntax)
+
+
+  (greeting "xyzzy")
+  ;=> "Hello xyzzy!"
+  
+  (calc-add 1 2)
+  ;=> "a = 1, b = 2, a + b = 3"
+  
+  (scan-numbers "123 foobar 456 hoge")
+  ;=> (123 456)
+
+
+Yahoo Japan! で検索して結果を表示するサンプル
+
+  (require "xl-interpol")
+  (require "xl-ppcre")
+
+  (interpol:enable-interpol-syntax)
+
+  (defparameter *yahoo-search-result-scanner*
+    (ppcre:create-scanner
+     #?rx(                    ; 拡張正規表現
+          <div\ class="hd">
+          .*?
+          <a .*? href="(.*?)" .*? >   # $1 = link
+            (.*?)                     # $2 = title
+          </a>
+          .*?
+          <div\ class="bd">
+            <p>
+              (.*?)                   # $3 = snippet
+            </p>
+          )
+     :case-insensitive-mode t ; タグの大文字小文字の違いは無視
+     :single-line-mode t      ; ドットが改行にもマッチするようにする
+     ))
+
+  (interpol:disable-interpol-syntax)
+
+  (defun cleanup-text (html)
+    (string-trim " \n" (substitute-string html "<[^<>]+>" "")))
+
+  (defun scan-yahoo-search-result (res)
+    (let (result)
+      (ppcre:do-register-groups (url
+                                 (#'cleanup-text title)
+                                 (#'cleanup-text snippet))
+        (*yahoo-search-result-scanner*
+         (xhr:xhr-response-text res)
+         (nreverse result))
+        (push (list url title snippet) result))))
+
+  (defun yahoo-search (query)
+    (xhr:xhr-get "http://search.yahoo.co.jp/search"
+                 :query `(:ei "UTF-8" :p ,query)
+                 :encoding *encoding-utf8n*
+                 :since :epoch
+                 :key #'scan-yahoo-search-result
+                 ))
+
+  (yahoo-search "cl-ppcre")
 
 === DESCRIPTION
 
 xl-interpol は {CL-INTERPOL - String interpolation for Common Lisp}[http://weitz.de/cl-interpol/]
 を xyzzy に移植したものです。
 
-...
+xl-interpol は以下の機能を提供しています。
+
+* 変数や式を文字列に埋め込める
+* 正規表現リテラル
+
+xl-interpol は以下の機能は <b>提供していません</b>。
+
+* ユニコード文字 (\N{Sigma} など)
 
 === INSTALL
 
@@ -30,8 +110,12 @@ xl-interpol は {CL-INTERPOL - String interpolation for Common Lisp}[http://weit
 
 パッケージ名は xl-interpol (ニックネームは interpol) です。
 
+詳細は {CL-INTERPOL - String interpolation for Common Lisp}[http://weitz.de/cl-interpol/] を参照してください。
+
 
 === TODO
+
+なし。
 
 
 === KNOWN BUGS
