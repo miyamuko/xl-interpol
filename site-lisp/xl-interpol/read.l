@@ -65,6 +65,9 @@ next MAX characters."
 
 (defun resolve-unicode-name (name)
   "Tries to return a character which was encoded as \\N<NAME>."
+  #+xyzzy
+  (error "\\N not supported")
+  #-xyzzy
   (or (character-named name)
       (gethash (canonicalize-name name) *unicode-aliases*)))
 

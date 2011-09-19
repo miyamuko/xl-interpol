@@ -1,3 +1,7 @@
+2011-09-19  MIYAMUKO Katsuyuki
+
+	* \N の場合は例外を投げるようにした
+
 2011-09-15  MIYAMUKO Katsuyuki
 
 	* xyzzy で読み込めるように修正
