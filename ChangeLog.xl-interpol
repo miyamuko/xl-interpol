@@ -1,5 +1,7 @@
 2011-09-19  MIYAMUKO Katsuyuki
 
+	* xl-interpol 1.0.0 リリース
+
 	* xyzzy の loop マクロがバグっているので一部書き換え
 	https://gist.github.com/520799
 	https://gist.github.com/1226038

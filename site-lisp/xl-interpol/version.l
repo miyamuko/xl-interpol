@@ -34,7 +34,7 @@
 (export '(xl-interpol-version
           ))
 
-(defconstant +xl-interpol-version+ "0.0.1")
+(defconstant +xl-interpol-version+ "1.0.0")
 
 (defun xl-interpol-version ()
   +xl-interpol-version+)
