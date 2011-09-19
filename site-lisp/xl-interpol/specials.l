@@ -69,7 +69,11 @@ global value but might have a dynamically bound value."
   ;; "prunesquallor@comcast.net"
   `(eval-when (:load-toplevel :compile-toplevel :execute)
     (defvar ,variable-name)
-    (si:*putprop ',variable-name ,documentation 'lisp::variable-documentation)))
+    #+xyzzy
+    (si:*putprop ',variable-name ,documentation 'lisp::variable-documentation)
+    #-xyzzy
+    (setf (documentation ',variable-name 'variable)
+            ,documentation)))
 
 (defvar-unbound *saw-backslash*
   "Whether we have to re-process an \L or \U because it closes several
