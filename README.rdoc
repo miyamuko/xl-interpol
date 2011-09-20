@@ -22,17 +22,22 @@
     (mapcar #'parse-integer
             (ppcre:all-matches-as-strings #?/\d+/ str)))
 
-  (interpol:disable-interpol-syntax)
-
-
   (greeting "xyzzy")
   ;=> "やあ xyzzy!"
 
   (calc-add 1 2)
   ;=> "a = 1, b = 2, a + b = 3"
-  
-  (scan-numbers "123 foobar 456 hoge")
-  ;=> (123 456)
+
+  (let* ((str "123 foobar 456 hoge 789")
+         (nums (scan-numbers str)))
+    (let ((interpol:*list-delimiter* " と "))
+      (princ #?<"${str}" に含まれている数字は @{nums} です。\n合計は ${(apply '+ nums)} です。>))
+    nil)
+  ;=> "123 foobar 456 hoge 789" に含まれている数字は 123 と 456 と 789 です。
+  ;   合計は 1368 です。
+  ;   nil
+
+  (interpol:disable-interpol-syntax)
 
 
 Yahoo Japan! で検索して結果を表示するサンプル
