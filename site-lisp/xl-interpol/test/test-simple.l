@@ -4,27 +4,18 @@
 ;;; read in the CL-INTERPOL-TEST package; all forms except SETQ forms
 ;;; are expected to return a true value on success when EVALuated
 
-(require "xl-interpol")
 (require "lisp-unit")
+(require "xl-interpol")
+(require "xl-interpol/test/helper")
 
 (defpackage :xl-interpol.test.simple
-  (:use :lisp :editor :lisp-unit :xl-interpol))
+  (:use :lisp :editor :lisp-unit :xl-interpol :xl-interpol.test.helper))
 
 (in-package :xl-interpol.test.simple)
 
 (remove-all-tests :xl-interpol.test.simple)
 
 (enable-interpol-syntax)
-
-(defmacro assert-string= (expected form &rest extras)
-  (lisp-unit::expand-assert :equal form form expected extras :test #'string=))
-
-(defmacro assert-string-equal (expected form &rest extras)
-  (lisp-unit::expand-assert :equal form form expected extras :test #'string-equal))
-
-(defmacro assert-char= (expected form &rest extras)
-  (lisp-unit::expand-assert :equal form form expected extras :test #'char=))
-
 
 (define-test read-simple
   (assert-string= #?"abc" "abc")
