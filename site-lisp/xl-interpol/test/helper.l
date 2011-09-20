@@ -33,6 +33,8 @@
 (export '(assert-string=
           assert-string-equal
           assert-char=
+
+          read-interpol
           ))
 
 (defmacro assert-string= (expected form &rest extras)
@@ -43,6 +45,11 @@
 
 (defmacro assert-char= (expected form &rest extras)
   (lisp-unit::expand-assert :equal form form expected extras :test #'char=))
+
+
+(defun read-interpol (str)
+  (with-input-from-string (stream str)
+    (interpol::interpol-reader stream nil nil)))
 
 
 (provide "xl-interpol/test/helper")

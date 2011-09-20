@@ -87,6 +87,28 @@
   (assert-string= #?"\Ufoo\LBAR" "FOObar")
   )
 
+(define-test unicode-name
+  (assert-string= #?"\N{HIRAGANA LETTER A}" "‚ ")
+  (assert-string= #?"\N{hiragana letter a}" "‚ ")
+  (assert-string= #?{\N{HIRAGANA LETTER A}} "‚ ")
+
+  ;; special CL-INTERPOL aliases
+  (assert-string= #?"\N{ZWJ}" #\zero_width_joiner)
+  (assert-string= #?"\N{ZWNJ}" #\zero_width_non_joiner)
+
+  #.(setq *try-hex-notation-p* t)
+  (assert-eql (char-code (char #?"\N{U+0042}" 0)) #x42)
+  (assert-string= #?"\N{U+3042}\N{U+3044}\N{U+3046}" "‚ ‚¢‚¤")
+  #.(setq *try-hex-notation-p* nil)
+
+  #.(setq *try-lisp-names-p* t)
+  (assert-char= (char #?"\N{LFD}" 0) #\LFD)
+  (assert-char= (char #?"\N{RET}" 0) #\RET)
+  (assert-char= (char #?"\N{a}" 0) #\a)
+  (assert-char= (char #?"\N{A}" 0) #\A)
+  #.(setq *try-lisp-names-p* nil)
+  )
+
 (define-test read-variable
   (let ((a "foo"))
     (assert-string= #?"$" "$")

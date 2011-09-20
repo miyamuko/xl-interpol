@@ -29,6 +29,7 @@
 
 (require "xl-interpol/version")
 (require "xl-interpol/read")
+(require "xl-interpol/alias")
 
 (provide "xl-interpol")
 

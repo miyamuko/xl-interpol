@@ -32,6 +32,7 @@
   (require "xl-interpol/specials")
   (require "xl-interpol/util")
   (require "xl-interpol/missing")
+  (require "xl-interpol/unicode")
   )
 
 (in-package :xl-interpol)
@@ -79,9 +80,6 @@ next MAX characters."
 
 (defun resolve-unicode-name (name)
   "Tries to return a character which was encoded as \\N<NAME>."
-  #+xyzzy
-  (error "\\N not supported")
-  #-xyzzy
   (or (character-named name)
       (gethash (canonicalize-name name) *unicode-aliases*)))
 

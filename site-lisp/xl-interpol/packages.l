@@ -33,7 +33,7 @@
 
 (defpackage :xl-interpol
   (:nicknames :interpol)
-  (:use :lisp :ppcre)
+  (:use :lisp :editor :ppcre)
   )
 
 (in-package :xl-interpol)
@@ -43,7 +43,13 @@
           *list-delimiter*
           *outer-delimiters*
           *inner-delimiters*
-          *optional-delimiters-p*))
+          *optional-delimiters-p*
+          *try-unicode1-names-p*
+          *try-abbreviations-p*
+          *scripts-to-try*
+          *try-hex-notation-p*
+          *try-lisp-names-p*
+          ))
 
 (provide "xl-interpol/packages")
 
