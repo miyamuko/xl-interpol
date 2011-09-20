@@ -1,5 +1,7 @@
 2011-09-20  MIYAMUKO Katsuyuki
 
+	* xl-interpol 1.0.1 リリース
+
 	* (resolve-unicode-name, character-named): \N をサポートした
 	以下の変数は cl-unicode との互換性のためだけに定義 (動作しない)
 	- *try-unicode1-names-p*
