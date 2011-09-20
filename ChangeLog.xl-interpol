@@ -1,3 +1,8 @@
+2011-09-20  MIYAMUKO Katsuyuki
+
+	* #. (read-time evaluation) を使って *optional-delimiters-p* の
+	テストを書いた (Thanks @youz)
+
 2011-09-19  MIYAMUKO Katsuyuki
 
 	* xl-interpol 1.0.0 リリース

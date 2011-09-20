@@ -134,18 +134,15 @@
     (assert-string= #?"${#?'${a} ${c}'} ${x}" "foo bar 40"))
   )
 
-#|
-read 時のみ *optional-delimiters-p* を t にしてテストしたいけど、
-やり方がわからない
 (define-test read-optional-delimiters
-  (setq *optional-delimiters-p* t)
+  #.(setq *optional-delimiters-p* t)
   (assert-string= (let ((% 23)) #?"$%a%b%") "23a%b%")
   (assert-string= (let ((%a 23)) #?"$%a%b%") "23%b%")
   (assert-string= (let ((%a% 23)) #?"$%a%b%") "23b%")
   (assert-string= (let ((%a%b 23)) #?"$%a%b%") "23%")
   (assert-string= (let ((%a%b% 23)) #?"$%a%b%") "23")
+  #.(setq *optional-delimiters-p* nil)
   )
-|#
 
 (disable-interpol-syntax)
 
