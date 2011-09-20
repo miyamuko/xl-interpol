@@ -32,13 +32,19 @@
 
 (in-package :xl-interpol)
 
-(define-condition simple-reader-error (simple-condition)
+(define-condition simple-reader-error (#-xyzzy simple-condition reader-error)
   ()
   (:documentation "A reader error which can be signalled by ERROR."))
 
 (defmacro signal-reader-error (format-control &rest format-arguments)
   "Like ERROR but signals a SIMPLE-READER-ERROR for the stream
 *STREAM*."
+  #+xyzzy
+  `(error 'simple-reader-error
+          :stream *stream*
+          :linenum (si:*stream-line-number *stream*)
+          :datum (format nil ,format-control ,@format-arguments))
+  #-xyzzy
   `(error 'simple-reader-error
           :stream *stream*
           :format-control ,format-control

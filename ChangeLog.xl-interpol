@@ -1,5 +1,8 @@
 2011-09-20  MIYAMUKO Katsuyuki
 
+	* (signal-reader-error): simple-reader-error を reader-error の
+	サブクラスとして、行番号などを設定するようにした
+
 	* #. (read-time evaluation) を使って *optional-delimiters-p* の
 	テストを書いた (Thanks @youz)
 
