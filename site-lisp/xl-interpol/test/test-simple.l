@@ -1,4 +1,4 @@
-; -*- mode: lisp; package: xl-interpol.test; encoding: shift_jis -*-
+; -*- mode: lisp; package: xl-interpol.test.simple; encoding: shift_jis -*-
 
 ;;; some simple tests for CL-INTERPOL - entered manually and to be
 ;;; read in the CL-INTERPOL-TEST package; all forms except SETQ forms
@@ -7,12 +7,12 @@
 (require "xl-interpol")
 (require "lisp-unit")
 
-(defpackage :xl-interpol.test
+(defpackage :xl-interpol.test.simple
   (:use :lisp :editor :lisp-unit :xl-interpol))
 
-(in-package :xl-interpol.test)
+(in-package :xl-interpol.test.simple)
 
-(remove-all-tests :xl-interpol.test)
+(remove-all-tests :xl-interpol.test.simple)
 
 (enable-interpol-syntax)
 
@@ -26,7 +26,7 @@
   (lisp-unit::expand-assert :equal form form expected extras :test #'char=))
 
 
-(define-test readmacro
+(define-test read-simple
   (assert-string= #?"abc" "abc")
   (assert-string= #?'abc' "abc")
   (assert-string= #?|abc| "abc")
@@ -44,7 +44,7 @@
   (assert-string= #?[a[[][]]b] "a[[][]]b")
   )
 
-(define-test readmacro2
+(define-test read-meta-chars
   (assert-string= #?"\t\n\r\f\b\a\e"
                   (coerce (list #\TAB #\LFD #\RET #\C-l #\C-h (code-char 7) (code-char 27))
                           'string))
@@ -69,7 +69,9 @@
   (assert-equal (map 'list #'char-code #?"\0\377\777") '(0 255 255))
   (assert-string= #?"Only\0403 digits!" "Only 3 digits!")
   (assert-equal (map 'list #'identity #?"\9") (list #\9))
+  )
 
+(define-test read-regex
   (assert-string= #?/\1/ "\\1")
   (assert-string= #?r"\1" "\\1")
   (assert-string= #?r"\k<foo>" "\\k<foo>")
@@ -83,7 +85,9 @@
   (assert-string= #?/a#bc/ "a#bc")
   (assert-string= #?x/a#bc/ "a")
   (assert-string= #?x/\d\A[\d\A]/ "\\d\\A[\\dA]")
+  )
 
+(define-test read-convert-case
   (assert-string= #?"\Q-" "\\-")
   (assert-string= #?"\Q-\E-" "\\--")
   (assert-string= #?"\ufoo" "Foo")
@@ -92,7 +96,7 @@
   (assert-string= #?"\Ufoo\LBAR" "FOObar")
   )
 
-(define-test readmacro3
+(define-test read-variable
   (let ((a "foo"))
     (assert-string= #?"$" "$")
     (assert-string= #?"@ @" "@ @")
@@ -133,7 +137,7 @@
 #|
 read 時のみ *optional-delimiters-p* を t にしてテストしたいけど、
 やり方がわからない
-(define-test readmacro4
+(define-test read-optional-delimiters
   (setq *optional-delimiters-p* t)
   (assert-string= (let ((% 23)) #?"$%a%b%") "23a%b%")
   (assert-string= (let ((%a 23)) #?"$%a%b%") "23%b%")
@@ -144,3 +148,5 @@ read 時のみ *optional-delimiters-p* を t にしてテストしたいけど、
 |#
 
 (disable-interpol-syntax)
+
+;;; End
