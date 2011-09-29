@@ -1,3 +1,8 @@
+2011-09-29  MIYAMUKO Katsuyuki
+
+	* ansi-loop を使うことで、cmu_loop.l のバグ回避のため
+	書き換えていたコードを元に戻した
+
 2011-09-21  MIYAMUKO Katsuyuki
 
 	* xl-interpol 独自のコードのライセンスを

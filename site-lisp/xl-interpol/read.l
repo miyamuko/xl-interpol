@@ -42,20 +42,6 @@
 for each character. Returns at most MAX characters if MAX is true."
   (when (eql max 0)
     (return-from read-while ""))
-  #+xyzzy
-  (let ((collector (make-collector))
-        (count 0)
-        c)
-    (loop
-      (setf c (peek-char*))
-      (incf count)
-      (if (and (or (not max)
-                   (<= count max))
-               c
-               (funcall predicate c))
-          (vector-push-extend (read-char*) collector)
-        (return collector))))
-  #-xyzzy
   (let ((collector (make-collector)))
     (loop for count of-type fixnum from 1
           for c = (peek-char*)
@@ -209,12 +195,6 @@ backslash has already been consumed."
 
 (defun read-longest-name ()
   (coerce
-   #+xyzzy
-   (let (r)
-     (while (not (never-name-char-p (peek-char nil *stream* nil nil t)))
-       (push (read-char*) r))
-     (nreverse r))
-   #-xyzzy
    (loop until (never-name-char-p (peek-char nil *stream* nil nil t))
       collect (read-char*))
    'string))
@@ -231,26 +211,6 @@ that tries to deal correctly with lexical variables."
 		    ,ostr)
 		(unbound-variable () ,form)))))
 
-  #+xyzzy
-  (let* ((name (read-longest-name))
-         (form `(error ,(format nil "Interpolation error in ~s~%" name)))
-         (ostr (gensym))
-         (i (position-if-not #'normal-name-char-p name)))
-    (loop
-      (unless i
-        (return `(let () ,quell-warnings-form
-                   (handler-case
-                       (with-output-to-string (,ostr)
-                         (princ ,(read-from-string name) ,ostr)
-                         ,ostr)
-                     (unbound-variable () ,form)))))
-      (if (> i 0)
-          (setq form (try-pos name i form)))
-      (if (< i (length name))
-          (setq form (try-pos name (1+ i) form)))
-      (setq i (position-if-not #'normal-name-char-p name :start (1+ i)))
-      ))
-  #-xyzzy
   (loop
      with name = (read-longest-name)
      with form = `(error ,(format nil "Interpolation error in ~s~%" name))

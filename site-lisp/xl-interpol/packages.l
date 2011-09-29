@@ -28,13 +28,19 @@
 
 (in-package :user)
 
-(require "cmu_loop")
-(require "xl-ppcre")
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (unless (find-package :xl-interpol)
+    (require "ansi-loop")
+    (require "xl-ppcre")
 
-(defpackage :xl-interpol
-  (:nicknames :interpol)
-  (:use :lisp :editor :ppcre)
-  )
+    (defpackage :xl-interpol
+      (:nicknames :interpol)
+      (:use :lisp :editor :ppcre)
+      (:shadowing-import-from :ansi-loop
+       :loop
+       :loop-finish
+       ))
+    ))
 
 (in-package :xl-interpol)
 

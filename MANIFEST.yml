@@ -12,6 +12,7 @@ document:
 
 depends:
   - xl-ppcre
+  - ansi-loop
 
 files:
   include:
