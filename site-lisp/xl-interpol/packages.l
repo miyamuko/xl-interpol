@@ -30,17 +30,23 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless (find-package :xl-interpol)
+    (require "ansify")
     (require "ansi-loop")
     (require "xl-ppcre")
 
     (defpackage :xl-interpol
       (:nicknames :interpol)
       (:use :lisp :editor :ppcre)
+      ;; xyzzy 標準で lisp::ecase などが将来的に提供された場合でも、
+      ;; シンボルが衝突してエラーにならないように shadowing-import にする
+      (:shadowing-import-from :ansify
+       :ecase
+       )
       (:shadowing-import-from :ansi-loop
        :loop
        :loop-finish
-       ))
-    ))
+       )
+      )))
 
 (in-package :xl-interpol)
 

@@ -36,18 +36,6 @@
 
 (in-package :xl-interpol)
 
-(defmacro ecase (keyform &rest forms)
-  `(case ,keyform
-     ,@forms
-     (t
-      (error 'type-error
-             :datum ',keyform
-             :expected-type ',(if (cdr forms)
-                                  `(or ,@(mapcar #'car forms))
-                                (caar forms)))
-      )))
-(setf (get 'ecase 'lisp-indent-hook) 1)
-
 (defun write-string (string &optional (stream *standard-output*) &key (start 0) end)
   (format stream "~A" (substring string start end)))
 

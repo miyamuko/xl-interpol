@@ -1,3 +1,7 @@
+2011-10-03  MIYAMUKO Katsuyuki
+
+	* missing.l: ecase は ansify のを利用するように修正
+
 2011-09-29  MIYAMUKO Katsuyuki
 
 	* xl-interpol 1.0.2 リリース
