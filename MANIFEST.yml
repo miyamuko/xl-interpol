@@ -13,6 +13,7 @@ document:
 depends:
   - xl-ppcre
   - ansi-loop
+  - ansify
 
 files:
   include:
