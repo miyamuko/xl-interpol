@@ -28,6 +28,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require "xl-interpol/packages")
+  (require "xl-interpol/missing")
   )
 
 (in-package :xl-interpol)
@@ -69,9 +70,6 @@ global value but might have a dynamically bound value."
   ;; "prunesquallor@comcast.net"
   `(eval-when (:load-toplevel :compile-toplevel :execute)
     (defvar ,variable-name)
-    #+xyzzy
-    (si:*putprop ',variable-name ,documentation 'lisp::variable-documentation)
-    #-xyzzy
     (setf (documentation ',variable-name 'variable)
             ,documentation)))
 

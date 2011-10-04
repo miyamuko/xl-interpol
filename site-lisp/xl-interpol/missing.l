@@ -39,6 +39,14 @@
 (defun write-string (string &optional (stream *standard-output*) &key (start 0) end)
   (format stream "~A" (substring string start end)))
 
+(defun set-documentation (symbol doc-type newvalue)
+  (if (and (consp symbol)
+           (eq (car symbol) 'setf)
+           (eq doc-type 'function))
+      (si:*putprop (cadr symbol) newvalue 'lisp::setf-documentation)
+    (si:*putprop symbol newvalue (get doc-type 'lisp::documentation-type))))
+(defsetf documentation set-documentation)
+
 
 (provide "xl-interpol/missing")
 
